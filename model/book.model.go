@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type BookModel struct {
 	Id        string
 	Name      string
@@ -13,12 +11,11 @@ type BookModel struct {
 	ReadPage  int32
 	Reading   bool
 	Finished  bool
-	InsertAt  time.Time
-	UpdateAt  time.Time
+	// InsertAt  time.Time
+	// UpdateAt  time.Time
 }
 
 type BookInput struct {
-	Id        string
 	Name      string
 	Year      int32
 	Author    string
