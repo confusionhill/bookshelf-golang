@@ -52,7 +52,6 @@ func LoginUser(c *gin.Context, db *sql.DB) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg":    "ok",
 			"status": http.StatusOK,
-			"data":   userDetail,
 			"token":  token,
 		})
 	}

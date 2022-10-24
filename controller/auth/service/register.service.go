@@ -5,15 +5,28 @@ import (
 	"log"
 	"mysql/model"
 	"net/http"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 )
+
+func isEmailValid(e string) bool {
+	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	return emailRegex.MatchString(e)
+}
 
 func RegisterUser(c *gin.Context, db *sql.DB) {
 	var user model.UserModel
 	err := c.BindJSON(&user)
 	if err != nil {
 		panic(err)
+	}
+	if !isEmailValid(user.Email) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"msg":    "Wrong email format",
+		})
+		return
 	}
 	password, err := HashPassword(user.Password)
 	if err != nil {
