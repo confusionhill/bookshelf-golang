@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-//root:dukun123@/dbname
 func CreateConnection() *sql.DB {
 	db, err := sql.Open("mysql", "root:dukun123@(localhost:3306)/belajar")
 	if err != nil {

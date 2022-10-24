@@ -1,7 +1,9 @@
 package main
 
 import (
-	"mysql/controller"
+	"database/sql"
+	"mysql/controller/auth"
+	"mysql/controller/book"
 	"mysql/database"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +12,13 @@ import (
 
 func main() {
 	db := database.CreateConnection()
-	r := gin.Default()
-	controller.BookController(r, db)
-	r.Run(":3030") // listen and serve on 0.0.0.0:3030 (for windows "localhost:8080")
+	setupServer(db)
 	defer db.Close()
+}
+
+func setupServer(db *sql.DB) {
+	r := gin.Default()
+	book.BookController(r, db)
+	auth.AuthController(r, db)
+	r.Run(":3030") // listen and serve on 0.0.0.0:3030 (for windows "localhost:8080")
 }

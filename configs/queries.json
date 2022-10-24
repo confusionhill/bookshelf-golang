@@ -1,0 +1,8 @@
+{
+    "get-books": {
+        "mysql": "SELECT * FROM books"
+    },
+    "get-book": {
+        "mysql" :"SELECT * FROM books WHERE id = ?"
+    }
+}
