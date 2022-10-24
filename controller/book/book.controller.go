@@ -3,6 +3,7 @@ package book
 import (
 	"database/sql"
 	"mysql/controller/book/service"
+	"mysql/utils/token"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +13,10 @@ func BookController(
 	db *sql.DB,
 ) {
 	bookRouter := router.Group("/books")
-	bookRouter.POST("/", func(c *gin.Context) {
+	authBookRouter := bookRouter.Group("")
+	authBookRouter.Use(token.JwtAuthMiddleware())
+
+	authBookRouter.POST("/", func(c *gin.Context) {
 		service.AddBook(c, db)
 	})
 	bookRouter.GET("/", func(c *gin.Context) {
@@ -22,10 +26,10 @@ func BookController(
 		id := c.Param("id")
 		service.GetBookById(c, db, id)
 	})
-	bookRouter.PUT("/:id", func(c *gin.Context) {
+	authBookRouter.PUT("/:id", func(c *gin.Context) {
 		service.UpdateBookById(c, db)
 	})
-	bookRouter.DELETE("/:id", func(c *gin.Context) {
+	authBookRouter.DELETE("/:id", func(c *gin.Context) {
 		service.DeleteBookById(c, db)
 	})
 }

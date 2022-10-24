@@ -18,9 +18,9 @@ func LoginUser(c *gin.Context, db *sql.DB) {
 	query := "SELECT * FROM user WHERE username = ?"
 	rows, err := db.Query(query, user.Username)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg":    err,
-			"status": http.StatusBadRequest,
+		c.JSON(http.StatusNotFound, gin.H{
+			"msg":    "Account not found",
+			"status": http.StatusNotFound,
 		})
 	}
 	var userDetail model.UserDetailModel
@@ -41,10 +41,9 @@ func LoginUser(c *gin.Context, db *sql.DB) {
 	}
 	token, err := token.GenerateToken(userDetail.Uuid)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg":    err,
-			"status": http.StatusOK,
-			"id":     userDetail.Uuid,
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":    "Token could not be generated",
+			"status": http.StatusBadRequest,
 		})
 		panic(err)
 	}
